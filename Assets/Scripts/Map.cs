@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Damageable : MonoBehaviour
+public class Map : MonoBehaviour
 {
+    public float xRange, yRange;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

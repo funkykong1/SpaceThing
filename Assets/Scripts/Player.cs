@@ -4,7 +4,8 @@ using UnityEngine;
 using System;
 using UnityEditor.Build.Content;
 using Unity.Mathematics;
-  
+using Unity.VisualScripting;
+
 
 public class Player : MonoBehaviour
 {
@@ -16,19 +17,43 @@ public class Player : MonoBehaviour
     float horizontalInput;
     float verticalInput;
     public float shipSpeed;
+    private GameObject map;
+    float xRange, yRange;
 
     void Awake()
     {
-        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        mainCamera = GameObject.Find("Brain").GetComponent<Camera>();
         //gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-
+        map = GameObject.Find("Map");
+        xRange = map.GetComponent<Map>().xRange;
+        yRange = map.GetComponent<Map>().yRange;
     }
      
     // Update is called once per frame
     void Update()
     {
+        //mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
         RotateToMouse();
         Move();
+
+        if (transform.position.x < -xRange)
+        {
+            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
+        }
+
+        if (transform.position.x > xRange)
+        {
+            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+        }
+        if (transform.position.y < -yRange)
+        {
+            transform.position = new Vector3(transform.position.x, -yRange, transform.position.z);
+        }
+
+        if (transform.position.y > yRange)
+        {
+            transform.position = new Vector3(transform.position.x, yRange, transform.position.z);
+        }
     }
 
 
@@ -42,10 +67,10 @@ public class Player : MonoBehaviour
     void Move()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * shipSpeed);
+        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * shipSpeed, Space.World);
 
         verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.up * verticalInput * Time.deltaTime * shipSpeed);
+        transform.Translate(Vector3.up * verticalInput * Time.deltaTime * shipSpeed, Space.World);
         
     }
 }
