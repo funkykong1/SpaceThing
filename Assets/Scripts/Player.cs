@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        mainCamera = GameObject.Find("Brain").GetComponent<Camera>();
+        mainCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
         //gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         map = GameObject.Find("Map");
         xRange = map.GetComponent<Map>().xRange;

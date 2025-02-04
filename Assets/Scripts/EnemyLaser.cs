@@ -5,18 +5,23 @@ using System;
 using UnityEditor.Build.Content;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEngine.AI;
 
 
 public class EnemyLaser : Enemy
 {
 
-    public bool attacking, playerVisible;
+    public bool alerted, playerVisible;
     Vector2 target;
-    GameObject player;
+    GameObject player, parent;
+    private NavMeshAgent agent;
 
     void Awake()
     {
+        //PARENT USED TO MOVE AND ROTATE
+        //parent = GetComponentInParent<GameObject>();
         player = GameObject.Find("Player");
+        agent = GetComponent<NavMeshAgent>();
     }
     // Update is called once per frame
     void Update()
@@ -26,17 +31,17 @@ public class EnemyLaser : Enemy
 
     IEnumerator Attack()
     {
-        attacking = true;
+        alerted = true;
         //handle where the enemy is facing
-        while(attacking)
+        while(alerted)
         {
             //player visible, face towards player
-            if(attacking && playerVisible)
+            if(alerted && playerVisible)
             {
                 target = player.transform.position;
             }
             //player out of sight, face towards a node or something
-            else if(attacking && !playerVisible)
+            else if(alerted && !playerVisible)
             {
 
             }
